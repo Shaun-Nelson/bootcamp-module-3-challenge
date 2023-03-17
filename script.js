@@ -4,8 +4,6 @@ function generatePassword() {
   let lowercase = "abcdefghijklmnopqrstuvwxyz";
   let numeric = "0123456789";
   let special = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-  let characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
   let passwordLength = prompt(
     "Please enter a password length between 8-128 characters."
@@ -25,13 +23,32 @@ function generatePassword() {
   if (
     includes.includes("lowercase") ||
     includes.includes("uppercase") ||
-    includes.includes("numeric" || includes.includes("special"))
+    includes.includes("numeric") ||
+    includes.includes("special")
   ) {
-    console.log("includes", includes);
+    let types = includes.join(" ");
+    alert(
+      `Your password will be ${passwordLength} characters long and will include [${types}] character type(s).`
+    );
   } else {
     alert("Please select at least one option of characters to include.");
     generatePassword();
   }
+
+  let types = includes.join(" ");
+  let characters = "";
+  if (types.includes("uppercase")) characters += uppercase;
+  if (types.includes("lowercase")) characters += lowercase;
+  if (types.includes("numeric")) characters += numeric;
+  if (types.includes("special")) characters += special;
+
+  let password = "";
+  for (i = 0; i < passwordLength; i++) {
+    let character = characters[Math.floor(Math.random() * characters.length)];
+    password += character;
+  }
+
+  return password;
 }
 
 // Get references to the #generate element
