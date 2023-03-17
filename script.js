@@ -1,10 +1,14 @@
 // Assignment code here
+
+// TODO: error checking (includes) -- no double inputs
 function generatePassword() {
+  // Initialize all possible password characters
   const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const lowercase = "abcdefghijklmnopqrstuvwxyz";
   const numeric = "0123456789";
   const special = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
+  // Prompt user to input password length and check to see if it meets requirements
   const passwordLength = prompt(
     "Please enter a password length between 8-128 characters."
   );
@@ -14,19 +18,35 @@ function generatePassword() {
     generatePassword();
   }
 
-  const includes = prompt(
+  // Prompt user to enter character types to use and cast string into an array
+  let options = prompt(
     "Please enter at least one option of characters to include (lowercase, uppercase, numeric, special) seperated by a space."
   )
     .toLowerCase()
     .split(" ");
 
+  //TODO: use confirm instead of alert
+
+  // If user option not valid, remove it from options array
+  const categories = ["lowercase", "uppercase", "numeric", "special"];
+
+  for (let option of options) {
+    if (!categories.includes(option)) {
+      const index = options.indexOf(option);
+      options.splice(index, 1);
+    }
+  }
+
+  // Create a string of user options to be used in confirmation alert
+  const types = options.join(" ");
+
+  // Check to see if user options includes at least one valid option
   if (
-    includes.includes("lowercase") ||
-    includes.includes("uppercase") ||
-    includes.includes("numeric") ||
-    includes.includes("special")
+    options.includes("lowercase") ||
+    options.includes("uppercase") ||
+    options.includes("numeric") ||
+    options.includes("special")
   ) {
-    const types = includes.join(" ");
     alert(
       `Your password will be ${passwordLength} characters long and will include [${types}] character type(s).`
     );
@@ -35,7 +55,7 @@ function generatePassword() {
     generatePassword();
   }
 
-  const types = includes.join(" ");
+  // Initialize an empty string and populate it based on selected user options
   let characters = "";
   if (types.includes("uppercase")) characters += uppercase;
   if (types.includes("lowercase")) characters += lowercase;
@@ -44,6 +64,7 @@ function generatePassword() {
 
   let password = "";
   for (i = 0; i < passwordLength; i++) {
+    // Through each iteration, add a random character to password string
     const character = characters[Math.floor(Math.random() * characters.length)];
     password += character;
   }
