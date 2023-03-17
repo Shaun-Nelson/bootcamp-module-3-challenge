@@ -1,13 +1,5 @@
 // Assignment code here
-
-// TODO: error checking (includes) -- no double inputs
-function generatePassword() {
-  // Initialize all possible password characters
-  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lowercase = "abcdefghijklmnopqrstuvwxyz";
-  const numeric = "0123456789";
-  const special = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-
+function getPasswordLength() {
   // Prompt user to input password length and check to see if it meets requirements
   const passwordLength = prompt(
     "Please enter a password length between 8-128 characters."
@@ -15,9 +7,13 @@ function generatePassword() {
 
   if (!passwordLength || !(passwordLength >= 8 && passwordLength <= 128)) {
     alert("Please enter a number between 8-128");
-    generatePassword();
+    return "";
   }
 
+  return passwordLength;
+}
+
+function getOptions() {
   // Prompt user to enter character types to use and cast string into an array
   let options = prompt(
     "Please enter at least one option of characters to include (lowercase, uppercase, numeric, special) seperated by a space."
@@ -25,18 +21,31 @@ function generatePassword() {
     .toLowerCase()
     .split(" ");
 
-  //TODO: use confirm instead of alert
-
-  // If user option not valid, remove it from options array
+  // If user option not valid or duplicate, remove it from options array
   const categories = ["lowercase", "uppercase", "numeric", "special"];
 
+  //Remove duplicate options by creating a Set and using the spread operator to convert it back into an array
+  options = [...new Set(options)];
+
+  //Get indices of all invalid options
+  let indices = [];
   for (let option of options) {
     if (!categories.includes(option)) {
-      const index = options.indexOf(option);
-      options.splice(index, 1);
+      let index = options.indexOf(option);
+      indices.push(index);
+      // options.splice(index, 1);
     }
   }
 
+  //Loop through options array starting from the end and remove invalid options
+  for (let i = indices.length - 1; i >= 0; i--) {
+    options.splice(indices[i], 1);
+  }
+
+  return options;
+}
+
+function validateOptions(passwordLength, options) {
   // Create a string of user options to be used in confirmation alert
   const types = options.join(" ");
 
@@ -52,15 +61,29 @@ function generatePassword() {
     );
   } else {
     alert("Please select at least one option of characters to include.");
-    generatePassword();
+    return "";
   }
+}
+
+function generatePassword() {
+  // Initialize all possible password characters
+  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lowercase = "abcdefghijklmnopqrstuvwxyz";
+  const numeric = "0123456789";
+  const special = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+
+  const passwordLength = getPasswordLength();
+
+  const options = getOptions();
+
+  validateOptions(passwordLength, options);
 
   // Initialize an empty string and populate it based on selected user options
   let characters = "";
-  if (types.includes("uppercase")) characters += uppercase;
-  if (types.includes("lowercase")) characters += lowercase;
-  if (types.includes("numeric")) characters += numeric;
-  if (types.includes("special")) characters += special;
+  if (options.includes("uppercase")) characters += uppercase;
+  if (options.includes("lowercase")) characters += lowercase;
+  if (options.includes("numeric")) characters += numeric;
+  if (options.includes("special")) characters += special;
 
   let password = "";
   for (i = 0; i < passwordLength; i++) {
