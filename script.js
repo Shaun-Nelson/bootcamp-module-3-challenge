@@ -24,7 +24,7 @@ function getOptions() {
   // If user option not valid or duplicate, remove it from options array
   const categories = ["lowercase", "uppercase", "numeric", "special"];
 
-  //Remove duplicate options by creating a Set and using the spread operator to convert it back into an array
+  //Remove duplicate options by creating a Set and using the spread operator to coerce it back into an array (from StackOverflow)
   options = [...new Set(options)];
 
   //Get indices of all invalid options
@@ -33,11 +33,10 @@ function getOptions() {
     if (!categories.includes(option)) {
       let index = options.indexOf(option);
       indices.push(index);
-      // options.splice(index, 1);
     }
   }
 
-  //Loop through options array starting from the end and remove invalid options
+  //Loop through options array starting from the end and remove invalid options (from StackOverflow)
   for (let i = indices.length - 1; i >= 0; i--) {
     options.splice(indices[i], 1);
   }
@@ -74,25 +73,28 @@ function generatePassword() {
 
   const passwordLength = getPasswordLength();
 
-  const options = getOptions();
+  if (passwordLength) {
+    const options = getOptions();
 
-  validateOptions(passwordLength, options);
+    validateOptions(passwordLength, options);
 
-  // Initialize an empty string and populate it based on selected user options
-  let characters = "";
-  if (options.includes("uppercase")) characters += uppercase;
-  if (options.includes("lowercase")) characters += lowercase;
-  if (options.includes("numeric")) characters += numeric;
-  if (options.includes("special")) characters += special;
+    // Initialize an empty string and populate it based on selected user options
+    let characters = "";
+    if (options.includes("uppercase")) characters += uppercase;
+    if (options.includes("lowercase")) characters += lowercase;
+    if (options.includes("numeric")) characters += numeric;
+    if (options.includes("special")) characters += special;
 
-  let password = "";
-  for (i = 0; i < passwordLength; i++) {
-    // Through each iteration, add a random character to password string
-    const character = characters[Math.floor(Math.random() * characters.length)];
-    password += character;
+    let password = "";
+    for (i = 0; i < passwordLength; i++) {
+      // Through each iteration, add a random character to password string
+      const character =
+        characters[Math.floor(Math.random() * characters.length)];
+      password += character;
+    }
+
+    return password;
   }
-
-  return password;
 }
 
 // Get references to the #generate element
