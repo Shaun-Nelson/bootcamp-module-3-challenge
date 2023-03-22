@@ -1,13 +1,13 @@
 // Assignment code here
 function getPasswordLength() {
   // Prompt user to input password length and check to see if it meets requirements
-  const passwordLength = prompt(
+  var passwordLength = prompt(
     "Please enter a password length between 8-128 characters."
   );
 
   if (!passwordLength || !(passwordLength >= 8 && passwordLength <= 128)) {
     alert("Please enter a number between 8-128");
-    return "";
+    return;
   }
 
   return passwordLength;
@@ -15,29 +15,29 @@ function getPasswordLength() {
 
 function getOptions() {
   // Prompt user to enter character types to use and cast string into an array
-  let options = prompt(
+  var options = prompt(
     "Please enter at least one option of characters to include (lowercase, uppercase, numeric, special) seperated by a space."
   )
     .toLowerCase()
     .split(" ");
 
   // If user option not valid or duplicate, remove it from options array
-  const categories = ["lowercase", "uppercase", "numeric", "special"];
+  var categories = ["lowercase", "uppercase", "numeric", "special"];
 
   //Remove duplicate options by creating a Set and using the spread operator to coerce it back into an array (from StackOverflow)
   options = [...new Set(options)];
 
   //Get indices of all invalid options
-  let indices = [];
-  for (let option of options) {
-    if (!categories.includes(option)) {
-      let index = options.indexOf(option);
+  var indices = [];
+  for (var i = 0; i < options.length; i++) {
+    if (!categories.includes(options[i])) {
+      var index = options.indexOf(options[i]);
       indices.push(index);
     }
   }
 
   //Loop through options array starting from the end and remove invalid options (from StackOverflow)
-  for (let i = indices.length - 1; i >= 0; i--) {
+  for (var i = indices.length - 1; i >= 0; i--) {
     options.splice(indices[i], 1);
   }
 
@@ -46,7 +46,7 @@ function getOptions() {
 
 function validateOptions(passwordLength, options) {
   // Create a string of user options to be used in confirmation alert
-  const types = options.join(" ");
+  var types = options.join(" ");
 
   // Check to see if user options includes at least one valid option
   if (
@@ -66,30 +66,29 @@ function validateOptions(passwordLength, options) {
 
 function generatePassword() {
   // Initialize all possible password characters
-  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lowercase = "abcdefghijklmnopqrstuvwxyz";
-  const numeric = "0123456789";
-  const special = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+  var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var lowercase = "abcdefghijklmnopqrstuvwxyz";
+  var numeric = "0123456789";
+  var special = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
-  const passwordLength = getPasswordLength();
+  var passwordLength = getPasswordLength();
 
   if (passwordLength) {
-    const options = getOptions();
+    var options = getOptions();
 
     validateOptions(passwordLength, options);
 
     // Initialize an empty string and populate it based on selected user options
-    let characters = "";
+    var characters = "";
     if (options.includes("uppercase")) characters += uppercase;
     if (options.includes("lowercase")) characters += lowercase;
     if (options.includes("numeric")) characters += numeric;
     if (options.includes("special")) characters += special;
 
-    let password = "";
+    var password = "";
     for (i = 0; i < passwordLength; i++) {
       // Through each iteration, add a random character to password string
-      const character =
-        characters[Math.floor(Math.random() * characters.length)];
+      var character = characters[Math.floor(Math.random() * characters.length)];
       password += character;
     }
 
