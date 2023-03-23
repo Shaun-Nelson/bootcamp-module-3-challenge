@@ -14,53 +14,37 @@ function getPasswordLength() {
 }
 
 function getOptions() {
-  // Prompt user to enter character types to use and cast string into an array
-  var options = prompt(
-    "Please enter at least one option of characters to include (lowercase, uppercase, numeric, special) seperated by a space."
-  )
-    .toLowerCase()
-    .split(" ");
+  var options = [];
 
-  // If user option not valid or duplicate, remove it from options array
-  var categories = ["lowercase", "uppercase", "numeric", "special"];
+  //A series of confirm prompts populates an array containing the results
+  var upper = confirm("Include uppercase characters?");
+  var lower = confirm("Include lowercase characters?");
+  var num = confirm("Include numeric characters?");
+  var sp = confirm("Include special characters?");
 
-  //Remove duplicate options by creating a Set and using the spread operator to coerce it back into an array (from StackOverflow)
-  options = [...new Set(options)];
-
-  //Get indices of all invalid options
-  var indices = [];
-  for (var i = 0; i < options.length; i++) {
-    if (!categories.includes(options[i])) {
-      var index = options.indexOf(options[i]);
-      indices.push(index);
-    }
-  }
-
-  //Loop through options array starting from the end and remove invalid options (from StackOverflow)
-  for (var i = indices.length - 1; i >= 0; i--) {
-    options.splice(indices[i], 1);
-  }
+  options.push(upper, lower, num, sp);
 
   return options;
 }
 
 function validateOptions(passwordLength, options) {
-  // Create a string of user options to be used in confirmation alert
-  var types = options.join(" ");
+  var types = [];
 
-  // Check to see if user options includes at least one valid option
-  if (
-    options.includes("lowercase") ||
-    options.includes("uppercase") ||
-    options.includes("numeric") ||
-    options.includes("special")
-  ) {
+  //Create a string of options to include in alert
+  if (options[0]) types.push("uppercase ");
+  if (options[1]) types.push("lowercase ");
+  if (options[2]) types.push("numeric ");
+  if (options[3]) types.push("special");
+
+  if (types.length >= 1) {
     alert(
-      `Your password will be ${passwordLength} characters long and will include [${types}] character type(s).`
+      `Your password will be ${passwordLength} characters long and will include [${types.join(
+        " "
+      )}] character type(s).`
     );
   } else {
     alert("Please select at least one option of characters to include.");
-    return "";
+    return;
   }
 }
 
@@ -80,10 +64,10 @@ function generatePassword() {
 
     // Initialize an empty string and populate it based on selected user options
     var characters = "";
-    if (options.includes("uppercase")) characters += uppercase;
-    if (options.includes("lowercase")) characters += lowercase;
-    if (options.includes("numeric")) characters += numeric;
-    if (options.includes("special")) characters += special;
+    if (options[0]) characters += uppercase;
+    if (options[1]) characters += lowercase;
+    if (options[2]) characters += numeric;
+    if (options[3]) characters += special;
 
     var password = "";
     for (i = 0; i < passwordLength; i++) {
