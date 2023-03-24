@@ -38,9 +38,9 @@ function validateOptions(passwordLength, options) {
 
   if (types.length >= 1) {
     alert(
-      `Your password will be ${passwordLength} characters long and will include [${types.join(
-        " "
-      )}] character type(s).`
+      `Your password will be ${passwordLength} characters long and will include [${types
+        .join(" ")
+        .trim()}] character type(s).`
     );
   } else {
     alert("Please select at least one option of characters to include.");
